@@ -105,8 +105,18 @@ public class EmployeeService implements EmployeeDAO {
 
 	@Override
 	public int deleteEmployee(int empId) {
-		// TODO Auto-generated method stub
-		return 0;
+		int rs = 0;
+		try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);) 
+		{
+			String sqlQuery = "DELETE FROM employees WHERE employeeNumber=?";
+			PreparedStatement ps = conn.prepareStatement(sqlQuery); 
+			ps.setInt(1,empId);
+			rs = ps.executeUpdate();
+		}
+		catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return rs;
 	}
 
 	public List<EmployeeDTO> getEmployeeEmails(){
